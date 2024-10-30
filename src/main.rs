@@ -23,14 +23,15 @@ fn main() -> io::Result<()> {
 
     // Open the zip file
     let file = File::open(&args.input)?;
-    let buf_reader = std::io::BufReader::with_capacity(8 * 1024 * 1024, file);
+    // let buf_reader = std::io::BufReader::with_capacity(8 * 1024 * 1024, file);
+    println!("Opening zip file: {:?}", &args.input);
 
-    // let wrapped = progress_bar.wrap_read(buf_reader);
     let mut archive =
-        zip::ZipArchive::new(buf_reader).expect("Failed to open zip file for reading");
+        zip::ZipArchive::new(file).expect("Failed to open zip file for reading");
+
     println!(
         "Extracting zip file: {:?} to {:?}",
-        archive, &args.destination
+        &args.input, &args.destination
     );
 
     archive.extract(&args.destination)?;
